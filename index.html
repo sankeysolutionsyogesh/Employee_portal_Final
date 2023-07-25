@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Homepage.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <form class="form-data" action="javascript:;" onsubmit="addEmployess(this)">
+            <h1>Add new Employee details</h1>
+            <label for="fname">Employee ID:</label>
+            <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID">
+            <label for="lname">Employee Name:</label>
+            <input type="text" id="emp_name" name="emp_name" placeholder="Enter Employee Name">
+            <label for="lname">Employee Age:</label>
+            <input type="number" id="emp_age" name="emp_age" placeholder="Enter Employee Age">
+            <label for="lname">Employee Designation:</label>
+            <select name="emp_desg" id="emp_desg" placeholder="Enter Employee Age">
+                <option value="nooption">---------SELECT----------</option>
+                <option value="HR">HR</option>
+                <option value="Solu_Analyst">Solution Analyst</option>
+                <option value="BRSolu_Analyst">BR Solution Analyst</option>
+                <option value="TRSolu_Analyst">TR Solution Analyst</option>
+            </select>
+            <label for="lname">Employee Image:</label>
+            <input type="text" id="emp_image" name="emp_image" placeholder="Enter Employee Image">
+            <label for="emp_gender">Employee Gender:</label>
+            <select id="emp_gender" name="emp_gender" placeholder="Enter Employee Gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="others">Others</option>
+            </select>
+            <input type="submit" value="Add">
+        </form>
+    </div>
+    <script>
+        function addEmployess(){
+            alert("Done")
+        }
+    </script>
+</body>
+
+</html>
