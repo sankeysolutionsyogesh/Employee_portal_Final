@@ -18,6 +18,13 @@ label{
     gap: 11px;
 
 }
+span {
+  color: red;
+}
+input[type=text]::after {
+    content: " - Remember this";
+  }
+
 
 input[type=text], select,  input[type=number]{
     width: 100%;

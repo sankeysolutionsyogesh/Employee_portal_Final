@@ -5,43 +5,261 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Homepage.css">
-    <title>Document</title>
+    <title>Employee_portal</title>
 </head>
 
 <body>
     <div class="container">
 
-        <form class="form-data" action="javascript:;" onsubmit="addEmployess(this)">
+        <form class="form-data" action="javascript:;" onsubmit="addEmployess()">
             <h1>Add new Employee details</h1>
+
             <label for="fname">Employee ID:</label>
-            <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID">
+            <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID" onfocusout="validateID()">
+            <span id="id_error"></span>
+
             <label for="lname">Employee Name:</label>
-            <input type="text" id="emp_name" name="emp_name" placeholder="Enter Employee Name">
+            <input type="text" id="emp_name" name="emp_name" placeholder="Enter Employee Name"
+                onkeydown="return /[a-z]/i.test(event.key)">
+            <span id="name_error"></span>
+
             <label for="lname">Employee Age:</label>
-            <input type="number" id="emp_age" name="emp_age" placeholder="Enter Employee Age">
+            <input type="number" id="emp_age" name="emp_age" placeholder="Enter Employee Age"
+                onfocusout="validateAge()">
+            <span id="age_error"></span>
+
             <label for="lname">Employee Designation:</label>
             <select name="emp_desg" id="emp_desg" placeholder="Enter Employee Age">
-                <option value="nooption">---------SELECT----------</option>
+                <option value="">Select Designation</option>
                 <option value="HR">HR</option>
                 <option value="Solu_Analyst">Solution Analyst</option>
                 <option value="BRSolu_Analyst">BR Solution Analyst</option>
                 <option value="TRSolu_Analyst">TR Solution Analyst</option>
             </select>
+            <span id="desg_error"></span>
+
             <label for="lname">Employee Image:</label>
             <input type="text" id="emp_image" name="emp_image" placeholder="Enter Employee Image">
+            <span id="image_error"></span>
+
             <label for="emp_gender">Employee Gender:</label>
             <select id="emp_gender" name="emp_gender" placeholder="Enter Employee Gender">
+                <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="others">Others</option>
             </select>
+            <span id="gender_error"></span>
+
             <input type="submit" value="Add">
         </form>
     </div>
     <script>
-        function addEmployess(){
-            alert("Done")
+        //All input values
+
+
+        var Errormessage = false
+
+        //Stores localstorage data
+        const userData = JSON.parse(localStorage.getItem('employee_details'));
+        console.log("Your data", userData)
+        checkLocalStorage()
+
+
+
+        function checkLocalStorage() {
+            if (userData == null) {
+                localStorage.setItem('employee_details', JSON.stringify([]));
+            }
+
         }
+
+
+
+        // Function to remove red border color and the content added by insertAdjacentHTML
+        function removeRedBorderAndContent(elementId, errorMessage) {
+            var targetElement = document.getElementById(elementId);
+            var error = document.getElementById(errorMessage);
+
+            if (targetElement) {
+                targetElement.style.borderColor = "black";
+                error.innerHTML = " ";
+            } else {
+                console.error("Element with ID '" + elementId + "' not found.");
+            }
+        }
+
+
+
+        function addContentAfterElement(elementId, content, errorMessage) {
+            var targetElement = document.getElementById(elementId);
+            var error = document.getElementById(errorMessage);
+
+            if (targetElement) {
+                targetElement.style.borderColor = "red";
+                error.innerHTML = content;
+            } else {
+                console.error("Element with ID '" + elementId + "' not found.");
+            }
+        }
+
+        // Example usage
+
+        var addID = ""
+        var addErrorMessage = ""
+
+
+        function addEmployess() {
+            var emp_id = document.getElementById("emp_id").value;
+            var emp_name = document.getElementById("emp_name").value;
+            var emp_age = document.getElementById("emp_age").value;
+            var emp_desg = document.getElementById("emp_desg").value;
+            var emp_image = document.getElementById("emp_image").value;
+            var emp_gender = document.getElementById("emp_gender").value;
+
+            console.log("error saw", addID)
+            removeRedBorderAndContent(addID, addErrorMessage);
+
+
+            // Validation function
+            function isFieldFilled(val) {
+                const data = document.getElementById(val).value
+                return data.trim() !== "";
+            }
+
+            // Checking individual variables
+            if (!isFieldFilled("emp_id")) {
+
+                addID = 'emp_id';
+                addErrorMessage = "id_error";
+                addContentAfterElement('emp_id', "Please enter ID", "id_error");
+                // addErrorStyle('emp_id', "Employee ID is required.");
+                return;
+            }
+
+            if (!isFieldFilled("emp_name")) {
+                addID = 'emp_name';
+                addErrorMessage = "name_error";
+                addContentAfterElement('emp_name', "Please enter Employee Name", "name_error");
+                return;
+            }
+
+            if (!isFieldFilled("emp_age")) {
+                addID = 'emp_age';
+                addErrorMessage = "age_error";
+                addContentAfterElement('emp_age', "Please enter Employee Age", "age_error");
+                return;
+            }
+
+            if (!isFieldFilled("emp_desg")) {
+                addID = 'emp_desg';
+                addErrorMessage = "desg_error";
+                addContentAfterElement('emp_desg', "Please select Employee Designation", "desg_error");
+                return;
+            }
+
+            if (!isFieldFilled("emp_image")) {
+                addID = 'emp_image';
+                addErrorMessage = "image_error";
+                addContentAfterElement('emp_image', "Please upload Employee image", "image_error");
+                return;
+            }
+
+            if (!isFieldFilled("emp_gender")) {
+                addID = 'emp_gender';
+                addErrorMessage = "gender_error";
+                addContentAfterElement('emp_gender', "Please select Employee gender", "gender_error");
+                return;
+            }
+
+
+
+
+
+            if (parseInt(emp_age) >= 18 && parseInt(emp_age) <= 60) {
+
+                console.log("Age is valid.");
+                if (isValidUrl(emp_image)) {
+                    console.log("URl is valid.");
+                    var emp_id = parseInt(emp_id);
+                    var emp_age = parseInt(emp_age);
+
+                    const inputData = {
+                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender
+                    }
+                    if(!Errormessage){
+                        submitData(inputData)
+                    }
+
+                } else {
+                    addID = 'emp_image';
+                    addErrorMessage = "image_error";
+                    addContentAfterElement('emp_image', "Please upload valid url", "image_error");
+                }
+
+            } else {
+                addID = 'emp_age';
+                addErrorMessage = "age_error";
+                addContentAfterElement('emp_age', "Please enter Age between 18 to 60", "age_error");
+                return;
+            }
+
+
+
+        }
+
+        function submitData(inputData) {
+
+            let userData = JSON.parse(localStorage.getItem('employee_details'));
+
+            if (userData.length == 0) {
+                localStorage.setItem('employee_details', JSON.stringify([inputData]));
+            } else {
+                localStorage.setItem('employee_details', JSON.stringify([...userData, inputData]));
+            }
+
+
+            alert("Succesed")
+
+        }
+        function validateID() {
+            var emp_id = parseInt(document.getElementById("emp_id").value);
+
+            userData.map(obj => {
+                if (obj.emp_id == emp_id) {
+                    addContentAfterElement('emp_id', "This ID is taken. Enter valid ID.", "id_error");
+                    Errormessage = true
+                } else {
+                    removeRedBorderAndContent("emp_id", "id_error");
+                    Errormessage = false
+
+                }
+            });
+
+
+        }
+
+        function validateAge() {
+
+
+        }
+
+        function isValidUrl(str) {
+            const pattern = new RegExp(
+                '^([a-zA-Z]+:\\/\\/)?' + // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                '(\\#[-a-z\\d_]*)?$', // fragment locator
+                'i'
+            );
+            return pattern.test(str);
+        }
+
+
+
+
     </script>
 </body>
 
