@@ -187,7 +187,7 @@
                     const inputData = {
                         emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender
                     }
-                    if(!Errormessage){
+                    if (!Errormessage) {
                         submitData(inputData)
                     }
 
@@ -220,6 +220,8 @@
 
 
             alert("You have successfully created a acccount")
+
+            window.open("ViewEmployees.html", "_self");
 
         }
         function validateID() {
