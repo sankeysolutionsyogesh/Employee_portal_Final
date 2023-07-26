@@ -21,7 +21,7 @@
             padding: 8px;
         }
 
-        tr:nth-child(even) {
+        tr:nth-child(odd) {
             background-color: #f2f2f2
         }
 
@@ -63,13 +63,32 @@
             cursor: pointer;
             border-radius: 4px;
         }
+
+        img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        .details {
+            margin-top: 20px;
+        }
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
     </style>
 </head>
 
 <body>
 
+    <div class="title">
+        <h1>Employee Details</h1>
 
-    <h1>Employee Details</h1>
+        <h2> <input type="submit" value="Add New Employee" onclick="goToAddEmployee()"> </h2>
+
+    </div>
     <table id="myTable">
         <tr>
             <th>
@@ -163,11 +182,104 @@
         </div>
     </div>
 
+    <div class="modal" id="viewModal">
+        <div class="modal-content view-Modal">
+            <h2 style="text-align: center;">Employee Identiy Card</h2>
+            <div class="view-Details">
+
+                <div class="view-data">
+                    <div class="item_data">
+                        <p><strong>Employee ID:</strong></p>
+                        <p><strong id="show_empId"></strong></p>
+
+                    </div>
+                    <div class="item_data">
+                        <p><strong>Name:</strong></p>
+                        <p><strong id="show_Name">12</strong></p>
+
+                    </div>
+                    <div class="item_data">
+                        <p><strong>Age:</strong> </p>
+                        <p><strong id="show_Age">12</strong></p>
+
+                    </div>
+                    <div class="item_data">
+                        <p><strong>Designation:</strong> </p>
+                        <p><strong id="show_Desg">12</strong></p>
+
+                    </div>
+                    <div class="item_data">
+                        <p><strong>Gender:</strong> </span></p>
+                        <p><strong id="show_gender">12</strong></p>
+
+                    </div>
+
+                </div>
+                <div class="view-image">
+                    <img src="https://cdn.pixabay.com/photo/2015/03/10/17/23/youtube-667451_1280.png"
+                        alt="Employee Image" id="show_Image">
+
+                </div>
+            </div>
+            <h2 style="text-align: center;"> <input type="submit" value="Goback" onclick="CloseViewModal()"> </h2>
+
+
+        </div>
+    </div>
 
     <script type="text/javascript" src="DeleteDetails.js"></script>
     <script type="text/javascript" src="EditDetails.js"></script>
 
+    <script>
+        var viewAccount = 0;
 
+
+        function viewFunction(editData) {
+
+            document.getElementById('viewModal').style.display = 'block';
+
+            const { emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender } = editData
+
+            console.log("adtd", editData)
+            viewAccount = emp_id;
+
+            const show_empId = document.getElementById("show_empId");
+            const show_Name = document.getElementById("show_Name");
+            const show_Age = document.getElementById("show_Age");
+            const show_Desg = document.getElementById("show_Desg");
+            const show_gender = document.getElementById("show_gender");
+
+            show_empId.innerHTML = emp_id;
+            show_Name.innerHTML = emp_name;
+            show_Age.innerHTML = emp_age;
+            show_Desg.innerHTML = emp_desg;
+            show_gender.innerHTML = emp_gender;
+
+
+            const imageElement = document.getElementById("show_Image");
+            imageElement.setAttribute("src", emp_image);
+
+            // console.log("Imagre -", emp_image)
+
+            // const DeleteName = document.getElementById("DeleteName");
+            // DeleteName.innerHTML = "Employee Name - " + empname;
+
+
+        }
+
+        function CloseViewModal() {
+            document.getElementById('viewModal').style.display = 'none';
+
+        }
+
+        function goToAddEmployee(){
+            history.back()
+        }
+
+
+         
+
+    </script>
     <script>
         const Userdata = JSON.parse(localStorage.getItem('employee_details'));
         console.log(Userdata)
@@ -226,8 +338,8 @@
             viewButton.classList.add("view-button");
 
             viewButton.addEventListener("click", function () {
-                console.log("View button clicked for emp_id:", emp_id);
-
+                const editData = { emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender }
+                viewFunction(editData)
             });
 
             buttonContainer.appendChild(editButton);
