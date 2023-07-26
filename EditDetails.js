@@ -102,9 +102,11 @@ function addEmployess() {
     var emp_image = document.getElementById("emp_image").value;
     var emp_gender = document.getElementById("emp_gender").value;
 
-    console.log("error saw", addID)
     removeRedBorderAndContent(addID, addErrorMessage);
 
+    if (Errormessage) {
+        return;
+    }
 
     // Validation function
     function isFieldFilled(val) {
@@ -222,3 +224,72 @@ function submitData(inputData) {
     }
 }
 
+
+
+const inputBox = document.getElementById("emp_id");
+
+function handleKeyup(event) {
+
+
+    var valuedata = document.getElementById("emp_id").value;
+
+
+    var targetElement = document.getElementById('emp_id');
+    var error = document.getElementById('id_error');
+
+    let isDuplicate = false;
+
+    console.log("id ", EditAccount)
+
+    if (valuedata != EditAccount) {
+        if (valuedata == 0) {
+            targetElement.style.borderColor = "red";
+            error.innerHTML = "The ID value cannot be 0 or left blank.";
+            inputBox.addEventListener('blur', keepFocusOnInput);
+
+        } else {
+
+            Userdata.forEach(obj => {
+                if (obj.emp_id === parseInt(valuedata)) {
+                    // alert("aceept");
+                    console.log(valuedata, "empid", obj.emp_id);
+                    targetElement.style.borderColor = "red";
+                    error.innerHTML = "Id already as been taken.";
+                    inputBox.addEventListener('blur', keepFocusOnInput);
+                    isDuplicate = true;
+                    Errormessage = true
+                    return; // This will exit the function and break the loop
+                }
+            });
+
+            if (!isDuplicate) {
+                // alert("reject");
+                removeRedBorderAndContent("emp_id", "id_error");
+                Errormessage = false;
+                inputBox.removeEventListener('blur', keepFocusOnInput);
+            }
+
+        }
+
+    }else{
+        removeRedBorderAndContent("emp_id", "id_error");
+        Errormessage = false;
+        inputBox.removeEventListener('blur', keepFocusOnInput);
+    }
+
+}
+
+function keepFocusOnInput() {
+    inputBox.focus();
+}
+
+function handleKeyDown(event) {
+    if (event.key === 'Tab') {
+        event.preventDefault(); // Prevent default tab behavior
+    }
+}
+
+
+// Attach the event listener
+inputBox.addEventListener("keyup", handleKeyup);
+inputBox.addEventListener("keydown", handleKeyDown);

@@ -17,7 +17,7 @@
             <h1>Add new Employee details</h1>
 
             <label for="fname">Employee ID:</label>
-            <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID" onfocusout="validateID()">
+            <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID">
             <span id="id_error"></span>
 
             <label for="lname">Employee Name:</label>
@@ -54,9 +54,10 @@
             <span id="gender_error"></span>
 
             <div style="display: flex;flex-direction: row;gap: 50px;            ">
-            <input type="submit" value="Add Employee Details">
-            <input style="background-color: rgb(43, 202, 226);" type="button" value="View Employee Details" onclick="ViewDetails()">
-        </div>
+                <input type="submit" value="Add Employee Details">
+                <input style="background-color: rgb(43, 202, 226);" type="button" value="View Employee Details"
+                    onclick="ViewDetails()">
+            </div>
         </form>
     </div>
     <script>
@@ -121,10 +122,12 @@
             var emp_image = document.getElementById("emp_image").value;
             var emp_gender = document.getElementById("emp_gender").value;
 
-            console.log("error saw", addID)
             removeRedBorderAndContent(addID, addErrorMessage);
 
 
+            if (Errormessage) {
+                return;
+            }
             // Validation function
             function isFieldFilled(val) {
                 const data = document.getElementById(val).value
@@ -228,28 +231,28 @@
             location.reload();
 
         }
-        function validateID() {
-            var emp_id = parseInt(document.getElementById("emp_id").value);
+        // function validateID() {
+        //     var emp_id = parseInt(document.getElementById("emp_id").value);
 
-            userData.map(obj => {
-                if (obj.emp_id == emp_id) {
-                    addContentAfterElement('emp_id', "This ID is taken. Enter valid ID.", "id_error");
-                    Errormessage = true
-                } else {
-                    removeRedBorderAndContent("emp_id", "id_error");
-                    Errormessage = false
+        //     userData.forEach(obj => {
+        //         if (obj.emp_id == emp_id) {
+        //             addContentAfterElement('emp_id', "This ID is taken. Enter valid ID.", "id_error");
+        //             Errormessage = true
+        //         } else {
+        //             removeRedBorderAndContent("emp_id", "id_error");
+        //             Errormessage = false
 
-                }
-            });
+        //         }
+        //     });
 
 
-        }
+        // }
 
         function ViewDetails() {
-            if(userData.length == 0){
+            if (userData.length == 0) {
                 alert("No Entrys to Display. Add Employee Details")
 
-            }else{
+            } else {
                 window.open("ViewEmployees.html", "_self");
             }
 
@@ -270,6 +273,58 @@
 
         }
 
+        const inputBox = document.getElementById("emp_id");
+
+        function handleKeyup(event) {
+
+
+            var valuedata = document.getElementById("emp_id").value;
+
+            let isDuplicate = false;
+
+            if (valuedata == 0) {
+                addContentAfterElement('emp_id', "The ID value cannot be 0 or left blank.", "id_error"); 
+                inputBox.addEventListener('blur', keepFocusOnInput);
+
+            } else {
+
+                userData.forEach(obj => {
+                    if (obj.emp_id === parseInt(valuedata)) {
+
+                        addContentAfterElement('emp_id', "Id already as been taken.", "id_error");
+
+                        inputBox.addEventListener('blur', keepFocusOnInput);
+                        isDuplicate = true;
+                        Errormessage = true;
+                        return; // This will exit the function and break the loop
+                    }
+                });
+
+                if (!isDuplicate) {
+                    // alert("reject");
+                    removeRedBorderAndContent("emp_id", "id_error");
+                    Errormessage = false;
+                    inputBox.removeEventListener('blur', keepFocusOnInput);
+                }
+
+            }
+
+        }
+
+        function keepFocusOnInput() {
+            inputBox.focus();
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Tab') {
+                event.preventDefault(); // Prevent default tab behavior
+            }
+        }
+
+
+        // Attach the event listener
+        inputBox.addEventListener("keyup", handleKeyup);
+        inputBox.addEventListener("keydown", handleKeyDown);
 
 
 
