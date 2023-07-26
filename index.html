@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Homepage.css">
+    <link rel="stylesheet" href="./css/Homepage.css">
+    <link rel="stylesheet" href="./css/form_data.css">
+
     <title>Employee_portal</title>
 </head>
 
@@ -15,7 +17,7 @@
             <h1>Add new Employee details</h1>
 
             <label for="fname">Employee ID:</label>
-            <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID" onfocusout="validateID()">
+            <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID">
             <span id="id_error"></span>
 
             <label for="lname">Employee Name:</label>
@@ -51,7 +53,11 @@
             </select>
             <span id="gender_error"></span>
 
-            <input type="submit" value="Add">
+            <div style="display: flex;flex-direction: row;gap: 50px;            ">
+                <input type="submit" value="Add Employee Details">
+                <input style="background-color: rgb(43, 202, 226);" type="button" value="View Employee Details"
+                    onclick="ViewDetails()">
+            </div>
         </form>
     </div>
     <script>
@@ -65,8 +71,7 @@
         console.log("Your data", userData)
         checkLocalStorage()
 
-
-
+        // localStorage.clear();
         function checkLocalStorage() {
             if (userData == null) {
                 localStorage.setItem('employee_details', JSON.stringify([]));
@@ -117,10 +122,12 @@
             var emp_image = document.getElementById("emp_image").value;
             var emp_gender = document.getElementById("emp_gender").value;
 
-            console.log("error saw", addID)
             removeRedBorderAndContent(addID, addErrorMessage);
 
 
+            if (Errormessage) {
+                return;
+            }
             // Validation function
             function isFieldFilled(val) {
                 const data = document.getElementById(val).value
@@ -132,7 +139,7 @@
 
                 addID = 'emp_id';
                 addErrorMessage = "id_error";
-                addContentAfterElement('emp_id', "Please enter ID", "id_error");
+                addContentAfterElement('emp_id', "Please enter Employee ID", "id_error");
                 // addErrorStyle('emp_id', "Employee ID is required.");
                 return;
             }
@@ -183,24 +190,24 @@
                     console.log("URl is valid.");
                     var emp_id = parseInt(emp_id);
                     var emp_age = parseInt(emp_age);
-
+                    var emp_isActive = true;
                     const inputData = {
-                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender
+                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
                     }
-                    if(!Errormessage){
+                    if (!Errormessage) {
                         submitData(inputData)
                     }
 
                 } else {
                     addID = 'emp_image';
                     addErrorMessage = "image_error";
-                    addContentAfterElement('emp_image', "Please upload valid url", "image_error");
+                    addContentAfterElement('emp_image', "Please upload a valid URL. Only .png, .jpg, .jpeg, and .gif formats are accepted.", "image_error");
                 }
 
             } else {
                 addID = 'emp_age';
                 addErrorMessage = "age_error";
-                addContentAfterElement('emp_age', "Please enter Age between 18 to 60", "age_error");
+                addContentAfterElement('emp_age', "Please enter an age between 18 and 60.", "age_error");
                 return;
             }
 
@@ -221,42 +228,76 @@
 
             alert("You have successfully created a acccount")
 
-        }
-        function validateID() {
-            var emp_id = parseInt(document.getElementById("emp_id").value);
+            location.reload();
 
-            userData.map(obj => {
-                if (obj.emp_id == emp_id) {
-                    addContentAfterElement('emp_id', "This ID is taken. Enter valid ID.", "id_error");
-                    Errormessage = true
-                } else {
+        }
+        function ViewDetails() {
+            if (userData.length == 0) {
+                alert("No Entrys to Display. Add Employee Details")
+
+            } else {
+                window.open("ViewEmployees.html", "_self");
+            }
+
+        }
+
+        function isValidUrl(url) {
+            const imageExtensionsRegex = /\.(png|jpe?g|gif)$/i;
+            return imageExtensionsRegex.test(url);
+        }
+
+        const inputBox = document.getElementById("emp_id");
+
+        function handleKeyup(event) {
+
+
+            var valuedata = document.getElementById("emp_id").value;
+
+            let isDuplicate = false;
+
+            if (valuedata == 0) {
+                addContentAfterElement('emp_id', "The ID value cannot be 0 or left blank.", "id_error");
+                inputBox.addEventListener('blur', keepFocusOnInput);
+
+            } else {
+
+                userData.forEach(obj => {
+                    if (obj.emp_id === parseInt(valuedata)) {
+
+                        addContentAfterElement('emp_id', "Id already as been taken.", "id_error");
+
+                        inputBox.addEventListener('blur', keepFocusOnInput);
+                        isDuplicate = true;
+                        Errormessage = true;
+                        return; // This will exit the function and break the loop
+                    }
+                });
+
+                if (!isDuplicate) {
+                    // alert("reject");
                     removeRedBorderAndContent("emp_id", "id_error");
-                    Errormessage = false
-
+                    Errormessage = false;
+                    inputBox.removeEventListener('blur', keepFocusOnInput);
                 }
-            });
 
-
-        }
-
-        function validateAge() {
-
+            }
 
         }
 
-        function isValidUrl(str) {
-            const pattern = new RegExp(
-                '^([a-zA-Z]+:\\/\\/)?' + // protocol
-                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
-                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-                '(\\#[-a-z\\d_]*)?$', // fragment locator
-                'i'
-            );
-            return pattern.test(str);
+        function keepFocusOnInput() {
+            inputBox.focus();
         }
 
+        function handleKeyDown(event) {
+            if (event.key === 'Tab') {
+                event.preventDefault(); // Prevent default tab behavior
+            }
+        }
+
+
+        // Attach the event listener
+        inputBox.addEventListener("keyup", handleKeyup);
+        inputBox.addEventListener("keydown", handleKeyDown);
 
 
 
