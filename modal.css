@@ -10,6 +10,16 @@
     background-color: rgba(0, 0, 0, 0.4); 
 }
 
+
+/* #editModal{
+    margin: 3% auto !important;
+} */
+
+.edit-Modal{
+    margin: 3% auto !important;
+
+}
+
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;

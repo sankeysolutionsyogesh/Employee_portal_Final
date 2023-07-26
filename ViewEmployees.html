@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Details</title>
     <link rel="stylesheet" href="modal.css">
+    <link rel="stylesheet" href="form_data.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         table {
@@ -109,7 +110,62 @@
         </div>
     </div>
 
+    <div class="modal" id="editModal">
+        <div class="modal-content edit-Modal">
+            <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
+            <form class="form-data" action="javascript:;" onsubmit="addEmployess()">
+                <h2>Edit Employee Details</h2>
 
+                <label for="fname">Employee ID:</label>
+                <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID"
+                    onfocusout="validateID()">
+                <span id="id_error"></span>
+
+                <label for="lname">Employee Name:</label>
+                <input type="text" id="emp_name" name="emp_name" placeholder="Enter Employee Name"
+                    onkeydown="return /[a-z]/i.test(event.key)">
+                <span id="name_error"></span>
+
+                <label for="lname">Employee Age:</label>
+                <input type="number" id="emp_age" name="emp_age" placeholder="Enter Employee Age"
+                    onfocusout="validateAge()">
+                <span id="age_error"></span>
+
+                <label for="lname">Employee Designation:</label>
+                <select name="emp_desg" id="emp_desg" placeholder="Enter Employee Age">
+                    <option value="">Select Designation</option>
+                    <option value="HR">HR</option>
+                    <option value="Solu_Analyst">Solution Analyst</option>
+                    <option value="BRSolu_Analyst">BR Solution Analyst</option>
+                    <option value="TRSolu_Analyst">TR Solution Analyst</option>
+                </select>
+                <span id="desg_error"></span>
+
+                <label for="lname">Employee Image:</label>
+                <input type="text" id="emp_image" name="emp_image" placeholder="Enter Employee Image">
+                <span id="image_error"></span>
+
+                <label for="emp_gender">Employee Gender:</label>
+                <select id="emp_gender" name="emp_gender" placeholder="Enter Employee Gender">
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="others">Others</option>
+                </select>
+                <span id="gender_error"></span>
+
+                <div style="display: flex;flex-direction: row;gap: 50px;            ">
+                    <input type="submit" value="Update Details">
+                    <input style="background-color: rgb(230, 115, 43);" type="button" value="   Cancel   "
+                        onclick="CancelEdit()">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="DeleteDetails.js"></script>
+    <script type="text/javascript" src="EditDetails.js"></script>
 
 
     <script>
@@ -118,8 +174,8 @@
         function getEmpDetails() {
             Userdata.map(emp => {
                 if (emp.emp_isActive) {
-                    const { emp_id, emp_name, emp_age, emp_desg, emp_gender } = emp;
-                    insertRow(emp_id, emp_name, emp_age, emp_desg, emp_gender)
+                    const { emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender } = emp;
+                    insertRow(emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender)
                 }
             });
 
@@ -127,7 +183,7 @@
 
 
 
-        function insertRow(emp_id, emp_name, emp_age, emp_desg, emp_gender) {
+        function insertRow(emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender) {
             let table = document.getElementById("myTable");
             let row = table.insertRow(-1);
             let c1 = row.insertCell(0);
@@ -151,7 +207,8 @@
             editButton.innerHTML = '<i class="fas fa-edit"></i>';
             editButton.classList.add("edit-button");
             editButton.addEventListener("click", function () {
-                console.log("Edit button clicked for emp_id:", emp_id);
+                const editData = { emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender }
+                EditFunction(editData)
 
             });
 
@@ -185,51 +242,9 @@
         getEmpDetails()
 
 
-        var DeleteAccount = 0;
-
-        function CancelDelete() {
-            DeleteAccount = 0;
-            document.getElementById('deleteModal').style.display = 'none';
-        }
-
-        function DeleteFunction(empid, empname) {
-            DeleteAccount = empid;
-
-            document.getElementById('deleteModal').style.display = 'block';
-
-
-            const DeleteID = document.getElementById("DeleteID");
-            DeleteID.innerHTML = "Employee ID - "+empid;
-
-            const DeleteName = document.getElementById("DeleteName");
-            DeleteName.innerHTML = "Employee Name - "+empname;
-        }
-
-        function ConfirmDelete() {
-            Userdata.forEach((emp, index) => {
-                if (emp.emp_id == DeleteAccount) {
-
-                    var {
-                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
-                    } = emp;
-
-                    emp_isActive = false
-
-                    const updatedData = {
-                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
-                    }
-
-                    Userdata.splice(index, 1, updatedData);
-                    localStorage.setItem('employee_details', JSON.stringify(Userdata));
-
-                }
-            });
-
-            location.reload();
-
-        }
-
     </script>
+
+
 </body>
 
 
