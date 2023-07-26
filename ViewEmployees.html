@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Details</title>
+    <link rel="stylesheet" href="modal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         table {
@@ -65,7 +66,9 @@
 </head>
 
 <body>
-    <h1></h1>
+
+
+    <h1>Employee Details</h1>
     <table id="myTable">
         <tr>
             <th>
@@ -91,14 +94,33 @@
 
         </tr>
     </table>
+
+
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
+            <h2>Delete Employee</h2>
+
+            <h3 id="DeleteID">ID - </h3>
+            <h3 id="DeleteName">Employee Name - </h3>
+
+            <button onclick="ConfirmDelete()">Delete</button>
+            <button onclick="CancelDelete()">Cancel</button>
+        </div>
+    </div>
+
+
+
+
     <script>
         const Userdata = JSON.parse(localStorage.getItem('employee_details'));
         console.log(Userdata)
         function getEmpDetails() {
-            Userdata.map(x => {
-                const { emp_id, emp_name, emp_age, emp_desg, emp_gender } = x;
-                insertRow(emp_id, emp_name, emp_age, emp_desg, emp_gender)
-
+            Userdata.map(emp => {
+                if (emp.emp_isActive) {
+                    const { emp_id, emp_name, emp_age, emp_desg, emp_gender } = emp;
+                    insertRow(emp_id, emp_name, emp_age, emp_desg, emp_gender)
+                }
             });
 
         }
@@ -138,7 +160,7 @@
             deleteButton.classList.add("delete-button");
 
             deleteButton.addEventListener("click", function () {
-                console.log("Delete button clicked for emp_id:", emp_id);
+                DeleteFunction(emp_id, emp_name)
 
             });
 
@@ -154,13 +176,59 @@
             buttonContainer.appendChild(editButton);
             buttonContainer.appendChild(deleteButton);
             buttonContainer.appendChild(viewButton);
-        
+
             c6.appendChild(buttonContainer);
 
         }
 
 
         getEmpDetails()
+
+
+        var DeleteAccount = 0;
+
+        function CancelDelete() {
+            DeleteAccount = 0;
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        function DeleteFunction(empid, empname) {
+            DeleteAccount = empid;
+
+            document.getElementById('deleteModal').style.display = 'block';
+
+
+            const DeleteID = document.getElementById("DeleteID");
+            DeleteID.innerHTML = "Employee ID - "+empid;
+
+            const DeleteName = document.getElementById("DeleteName");
+            DeleteName.innerHTML = "Employee Name - "+empname;
+        }
+
+        function ConfirmDelete() {
+            Userdata.forEach((emp, index) => {
+                if (emp.emp_id == DeleteAccount) {
+
+                    var {
+                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
+                    } = emp;
+
+                    emp_isActive = false
+
+                    const updatedData = {
+                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
+                    }
+
+                    Userdata.splice(index, 1, updatedData);
+                    localStorage.setItem('employee_details', JSON.stringify(Userdata));
+
+                }
+            });
+
+            location.reload();
+
+        }
+
     </script>
 </body>
 

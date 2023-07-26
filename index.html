@@ -51,7 +51,10 @@
             </select>
             <span id="gender_error"></span>
 
-            <input type="submit" value="Add">
+            <div style="display: flex;flex-direction: row;gap: 50px;            ">
+            <input type="submit" value="Add Employee Details">
+            <input style="background-color: rgb(43, 202, 226);" type="button" value="View Employee Details" onclick="ViewDetails()">
+        </div>
         </form>
     </div>
     <script>
@@ -65,8 +68,7 @@
         console.log("Your data", userData)
         checkLocalStorage()
 
-
-
+        // localStorage.clear();
         function checkLocalStorage() {
             if (userData == null) {
                 localStorage.setItem('employee_details', JSON.stringify([]));
@@ -183,9 +185,9 @@
                     console.log("URl is valid.");
                     var emp_id = parseInt(emp_id);
                     var emp_age = parseInt(emp_age);
-
+                    var emp_isActive = true;
                     const inputData = {
-                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender
+                        emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
                     }
                     if (!Errormessage) {
                         submitData(inputData)
@@ -221,7 +223,7 @@
 
             alert("You have successfully created a acccount")
 
-            window.open("ViewEmployees.html", "_self");
+            location.reload();
 
         }
         function validateID() {
@@ -241,8 +243,13 @@
 
         }
 
-        function validateAge() {
+        function ViewDetails() {
+            if(userData.length == 0){
+                alert("No Entrys to Display. Add Employee Details")
 
+            }else{
+                window.open("ViewEmployees.html", "_self");
+            }
 
         }
 
@@ -256,7 +263,9 @@
                 '(\\#[-a-z\\d_]*)?$', // fragment locator
                 'i'
             );
-            return pattern.test(str);
+            // return pattern.test(str);
+            return true;
+
         }
 
 
