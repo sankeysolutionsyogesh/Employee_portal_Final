@@ -118,3 +118,17 @@
   input[type=submit]:hover, input[type=button] {
     background-color: #0de48aa8;
   }
+
+  @media screen and (max-width: 999px) {
+    .view-Details {
+        display: flex;
+        flex-direction:  column-reverse;
+        justify-content: space-between;
+        width: 80%;
+        margin: 0 auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+  }
