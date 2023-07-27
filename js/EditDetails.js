@@ -72,21 +72,11 @@ function addContentAfterElement(elementId, content, errorMessage) {
     }
 }
 
-
-function isValidUrl(str) {
-    const pattern = new RegExp(
-        '^([a-zA-Z]+:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', // fragment locator
-        'i'
-    );
-    // return pattern.test(str);
-    return true;
-
+function isValidUrl(url) {
+    const imageExtensionsRegex = /\.(png|jpe?g|gif)$/i;
+    return imageExtensionsRegex.test(url);
 }
+
 
 
 
@@ -138,6 +128,14 @@ function addEmployess() {
         return;
     }
 
+    if (parseInt(emp_age) < 18 || parseInt(emp_age) > 60) {
+        addID = 'emp_age';
+        addErrorMessage = "age_error";
+        addContentAfterElement('emp_age', "Please enter an age between 18 and 60.", "age_error");
+        return;
+    }
+
+
     if (!isFieldFilled("emp_desg")) {
         addID = 'emp_desg';
         addErrorMessage = "desg_error";
@@ -152,6 +150,13 @@ function addEmployess() {
         return;
     }
 
+    if (!isValidUrl(emp_image)) {
+        addID = 'emp_image';
+        addErrorMessage = "image_error";
+        addContentAfterElement('emp_image', "Please upload a valid URL. Only .png, .jpg, .jpeg, and .gif formats are accepted.", "image_error");
+        return;
+    }
+
     if (!isFieldFilled("emp_gender")) {
         addID = 'emp_gender';
         addErrorMessage = "gender_error";
@@ -163,33 +168,19 @@ function addEmployess() {
 
 
 
-    if (parseInt(emp_age) >= 18 && parseInt(emp_age) <= 60) {
 
-        console.log("Age is valid.");
-        if (isValidUrl(emp_image)) {
-            console.log("URl is valid.");
-            var emp_id = parseInt(emp_id);
-            var emp_age = parseInt(emp_age);
-            var emp_isActive = true;
-            const inputData = {
-                emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
-            }
-            if (!Errormessage) {
-                submitData(inputData)
-            }
 
-        } else {
-            addID = 'emp_image';
-            addErrorMessage = "image_error";
-            addContentAfterElement('emp_image', "Please upload valid url", "image_error");
+    if (!Errormessage) {
+        var emp_id = parseInt(emp_id);
+        var emp_age = parseInt(emp_age);
+        var emp_isActive = true;
+        const inputData = {
+            emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
         }
-
-    } else {
-        addID = 'emp_age';
-        addErrorMessage = "age_error";
-        addContentAfterElement('emp_age', "Please enter Age between 18 to 60", "age_error");
-        return;
+        submitData(inputData)
     }
+
+
 
 
 
@@ -241,24 +232,29 @@ function handleKeyup(event) {
 
     console.log("id ", EditAccount)
 
+
     if (valuedata != EditAccount) {
+        if (parseInt(valuedata) < 0) {
+            addContentAfterElement('emp_id', "The ID value cannot be negative", "id_error");
+            inputBox.addEventListener('blur', keepFocusOnInput);
+            Errormessage = true;
+            return;
+        }
+
         if (valuedata == 0) {
-            targetElement.style.borderColor = "red";
-            error.innerHTML = "The ID value cannot be 0 or left blank.";
+            addContentAfterElement('emp_id', "The ID value cannot be 0 or left blank.", "id_error");
+            inputBox.addEventListener('blur', keepFocusOnInput);
             inputBox.addEventListener('blur', keepFocusOnInput);
 
         } else {
 
             Userdata.forEach(obj => {
                 if (obj.emp_id === parseInt(valuedata)) {
-                    // alert("aceept");
-                    console.log(valuedata, "empid", obj.emp_id);
-                    targetElement.style.borderColor = "red";
-                    error.innerHTML = "Id already as been taken.";
+                    addContentAfterElement('emp_id', "Id already as been taken.", "id_error");
                     inputBox.addEventListener('blur', keepFocusOnInput);
                     isDuplicate = true;
                     Errormessage = true
-                    return; // This will exit the function and break the loop
+                    return;
                 }
             });
 
@@ -271,7 +267,7 @@ function handleKeyup(event) {
 
         }
 
-    }else{
+    } else {
         removeRedBorderAndContent("emp_id", "id_error");
         Errormessage = false;
         inputBox.removeEventListener('blur', keepFocusOnInput);

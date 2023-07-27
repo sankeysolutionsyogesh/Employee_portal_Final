@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>JavaScript Strings</h1>
+<h2>The search() Method</h2>
+
+<input type="text" id="searchInput" placeholder="Search by name">
+<button onclick="search()">Search</button>
+<div id="searchResults"></div>
+
+
+<script>
+const data = [
+  { id: 1, name: "John Doe", age: 30 },
+  { id: 2, name: "Jane Smith", age: 25 },
+  { id: 3, name: "Bob Johnson", age: 40 },
+  // More objects...
+];
+
+// JavaScript
+function search() {
+  const userInput = document.getElementById("searchInput").value.toLowerCase().trim();
+
+  if (!userInput) {
+    // If the input is empty, clear the search results and return
+    document.getElementById("searchResults").innerHTML = "";
+    return;
+  }
+
+  const results = data.filter(item => item.name.toLowerCase().includes(userInput));
+  if (results.length === 0) {
+    document.getElementById("searchResults").innerHTML = "No matching results found.";
+  } else {
+    const resultList = results.map(item => `<p>${item.name}, Age: ${item.age}</p>`);
+
+ console.log("Result", resultList)
+
+    document.getElementById("searchResults").innerHTML = resultList.join("");
+  }
+}
+
+</script>
+
+</body>
+</html>
+
