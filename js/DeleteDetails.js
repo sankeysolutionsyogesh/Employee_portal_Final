@@ -20,8 +20,8 @@ function CancelDelete() {
     document.getElementById('deleteModal').style.display = 'none';
 }
 
-function ConfirmDelete() {
-    Userdata.forEach((emp, index) => {
+async function ConfirmDelete() {
+    EmployeeData.forEach((emp, index) => {
         if (emp.emp_id == DeleteAccount) {
 
             var {
@@ -34,12 +34,12 @@ function ConfirmDelete() {
                 emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender, emp_isActive
             }
 
-            Userdata.splice(index, 1, updatedData);
-            localStorage.setItem('employee_details', JSON.stringify(Userdata));
+            EmployeeData.splice(index, 1, updatedData);
 
         }
     });
 
-    location.reload();
+    await getEmpDetails();
+    document.getElementById('deleteModal').style.display = 'none';
 
 }

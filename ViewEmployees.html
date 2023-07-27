@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>View Details</title>
-    <link rel="stylesheet" href="./css/modal.css">
-    <link rel="stylesheet" href="./css/form_data.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./css/modal.css" />
+    <link rel="stylesheet" href="./css/form_data.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         table {
             border-collapse: collapse;
@@ -22,7 +22,7 @@
         }
 
         tr:nth-child(odd) {
-            background-color: #f2f2f2
+            background-color: #f2f2f2;
         }
 
         th {
@@ -44,7 +44,6 @@
             cursor: pointer;
             border-radius: 4px;
         }
-
 
         .delete-button {
             background-color: red;
@@ -82,47 +81,32 @@
 </head>
 
 <body>
-
     <div class="title">
         <h1>Employee Details</h1>
 
-        <h2> <input type="submit" value="Add New Employee" onclick="goToAddEmployee()"> </h2>
-
+        <h2>
+            <input type="submit" value="Add New Employee" onclick="goToAddEmployee()" />
+        </h2>
     </div>
     <table id="myTable">
         <tr>
-            <th>
-                Employee Id
-            </th>
-            <th>
-                Employee Name
-            </th>
-            <th>
-                Employee Age
-            </th>
-            <th>
-                Employee Designation
-            </th>
-            <th>
-                Employee Gender
-            </th>
-            <th>
-                Actions
-            </th>
+            <th>Employee Id</th>
+            <th>Employee Name</th>
+            <th>Employee Age</th>
+            <th>Employee Designation</th>
+            <th>Employee Gender</th>
+            <th>Actions</th>
         </tr>
-        <tr>
-
-        </tr>
+        <tr></tr>
     </table>
-
 
     <div class="modal" id="deleteModal">
         <div class="modal-content">
             <!-- <span class="close-btn" id="closeModalBtn">&times;</span> -->
             <h2>Delete Employee</h2>
 
-            <h3 id="DeleteID">ID - </h3>
-            <h3 id="DeleteName">Employee Name - </h3>
+            <h3 id="DeleteID">ID -</h3>
+            <h3 id="DeleteName">Employee Name -</h3>
 
             <button onclick="ConfirmDelete()">Delete</button>
             <button onclick="CancelDelete()">Cancel</button>
@@ -136,16 +120,17 @@
                 <h2>Edit Employee Details</h2>
 
                 <label for="fname">Employee ID:</label>
-                <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID" onKeyPress="if(this.value.length==6) return false;">
+                <input type="number" id="emp_id" name="emp_id" placeholder="Enter Employee ID"
+                    onKeyPress="if(this.value.length==6) return false;" />
                 <span id="id_error"></span>
 
                 <label for="lname">Employee Name:</label>
-                <input type="text" id="emp_name" name="emp_name" placeholder="Enter Employee Name">
+                <input type="text" id="emp_name" name="emp_name" placeholder="Enter Employee Name" />
                 <span id="name_error"></span>
 
                 <label for="lname">Employee Age:</label>
                 <input type="number" id="emp_age" name="emp_age" placeholder="Enter Employee Age"
-                    onfocusout="validateAge()">
+                    onfocusout="validateAge()" />
                 <span id="age_error"></span>
 
                 <label for="lname">Employee Designation:</label>
@@ -159,7 +144,7 @@
                 <span id="desg_error"></span>
 
                 <label for="lname">Employee Image:</label>
-                <input type="text" id="emp_image" name="emp_image" placeholder="Enter Employee Image">
+                <input type="text" id="emp_image" name="emp_image" placeholder="Enter Employee Image" />
                 <span id="image_error"></span>
 
                 <label for="emp_gender">Employee Gender:</label>
@@ -171,10 +156,10 @@
                 </select>
                 <span id="gender_error"></span>
 
-                <div style="display: flex;flex-direction: row;gap: 50px;            ">
-                    <input type="submit" value="Update Details">
-                    <input style="background-color: rgb(230, 115, 43);" type="button" value="   Cancel   "
-                        onclick="CancelEdit()">
+                <div style="display: flex; flex-direction: row; gap: 50px">
+                    <input type="submit" value="Update Details" />
+                    <input style="background-color: rgb(230, 115, 43)" type="button" value="   Cancel   "
+                        onclick="CancelEdit()" />
                 </div>
             </form>
         </div>
@@ -182,74 +167,91 @@
 
     <div class="modal" id="viewModal">
         <div class="modal-content view-Modal">
-            <h2 style="text-align: center;">Employee Identiy Card</h2>
+            <h2 style="text-align: center">Employee Identiy Card</h2>
             <div class="view-Details">
-
                 <div class="view-data">
                     <div class="item_data">
                         <p><strong>Employee ID:</strong></p>
                         <p><strong id="show_empId"></strong></p>
-
                     </div>
                     <div class="item_data">
                         <p><strong>Name:</strong></p>
                         <p><strong id="show_Name">12</strong></p>
-
                     </div>
                     <div class="item_data">
-                        <p><strong>Age:</strong> </p>
+                        <p><strong>Age:</strong></p>
                         <p><strong id="show_Age">12</strong></p>
-
                     </div>
                     <div class="item_data">
-                        <p><strong>Designation:</strong> </p>
+                        <p><strong>Designation:</strong></p>
                         <p><strong id="show_Desg">12</strong></p>
-
                     </div>
                     <div class="item_data">
-                        <p><strong>Gender:</strong> </span></p>
+                        <p><strong>Gender:</strong></p>
                         <p><strong id="show_gender">12</strong></p>
-
                     </div>
-
                 </div>
                 <div class="view-image">
                     <img src="https://cdn.pixabay.com/photo/2015/03/10/17/23/youtube-667451_1280.png"
-                        alt="Employee Image" id="show_Image">
-
+                        alt="Employee Image" id="show_Image" />
                 </div>
             </div>
-            <h2 style="text-align: center;"> <input type="submit" value="Goback" onclick="CloseViewModal()"> </h2>
-
-
+            <h2 style="text-align: center">
+                <input type="submit" value="Goback" onclick="CloseViewModal()" />
+            </h2>
         </div>
     </div>
+    <!-- TargetPage.html -->
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const dataValue = urlParams.get("data");
+        console.log(dataValue); // Output: "value"
+    </script>
 
+    <script type="text/javascript" src="commanFunction.js"></script>
     <script type="text/javascript" src="./js/DeleteDetails.js"></script>
     <script type="text/javascript" src="./js/EditDetails.js"></script>
     <script type="text/javascript" src="./js/ViewSingleDetails.js"></script>
 
     <script>
-
         function goToAddEmployee() {
-            history.back()
+            history.back();
         }
-
     </script>
     <script>
-        const Userdata = JSON.parse(localStorage.getItem('employee_details'));
-        console.log(Userdata)
+        const Userdata = JSON.parse(localStorage.getItem("employee_details"));
+        console.log("Data", EmployeeData);
         function getEmpDetails() {
-            Userdata.map(emp => {
+            Userdata.map((emp) => {
                 if (emp.emp_isActive) {
-                    const { emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender } = emp;
-                    insertRow(emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender)
+                    const {
+                        emp_id,
+                        emp_name,
+                        emp_age,
+                        emp_desg,
+                        emp_image,
+                        emp_gender,
+                    } = emp;
+                    insertRow(
+                        emp_id,
+                        emp_name,
+                        emp_age,
+                        emp_desg,
+                        emp_image,
+                        emp_gender
+                    );
                 }
             });
-
         }
 
-        function insertRow(emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender) {
+        function insertRow(
+            emp_id,
+            emp_name,
+            emp_age,
+            emp_desg,
+            emp_image,
+            emp_gender
+        ) {
             let table = document.getElementById("myTable");
             let row = table.insertRow(-1);
             let c1 = row.insertCell(0);
@@ -259,12 +261,11 @@
             let c5 = row.insertCell(4);
             let c6 = row.insertCell(5);
 
-            c1.innerText = emp_id
-            c2.innerText = emp_name
-            c3.innerText = emp_age
-            c4.innerText = emp_desg
-            c5.innerText = emp_gender
-
+            c1.innerText = emp_id;
+            c2.innerText = emp_name;
+            c3.innerText = emp_age;
+            c4.innerText = emp_desg;
+            c5.innerText = emp_gender;
 
             let buttonContainer = document.createElement("div");
             buttonContainer.classList.add("button-container");
@@ -273,9 +274,15 @@
             editButton.innerHTML = '<i class="fas fa-edit"></i>';
             editButton.classList.add("edit-button");
             editButton.addEventListener("click", function () {
-                const editData = { emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender }
-                EditFunction(editData)
-
+                const editData = {
+                    emp_id,
+                    emp_name,
+                    emp_age,
+                    emp_desg,
+                    emp_image,
+                    emp_gender,
+                };
+                EditFunction(editData);
             });
 
             let deleteButton = document.createElement("button");
@@ -283,8 +290,7 @@
             deleteButton.classList.add("delete-button");
 
             deleteButton.addEventListener("click", function () {
-                DeleteFunction(emp_id, emp_name)
-
+                DeleteFunction(emp_id, emp_name);
             });
 
             let viewButton = document.createElement("button");
@@ -292,8 +298,15 @@
             viewButton.classList.add("view-button");
 
             viewButton.addEventListener("click", function () {
-                const editData = { emp_id, emp_name, emp_age, emp_desg, emp_image, emp_gender }
-                viewFunction(editData)
+                const editData = {
+                    emp_id,
+                    emp_name,
+                    emp_age,
+                    emp_desg,
+                    emp_image,
+                    emp_gender,
+                };
+                viewFunction(editData);
             });
 
             buttonContainer.appendChild(editButton);
@@ -301,17 +314,10 @@
             buttonContainer.appendChild(viewButton);
 
             c6.appendChild(buttonContainer);
-
         }
 
-
-        getEmpDetails()
-
-
+        getEmpDetails();
     </script>
-
-
 </body>
-
 
 </html>
