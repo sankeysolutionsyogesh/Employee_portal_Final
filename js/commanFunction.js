@@ -2,6 +2,13 @@
 
 var onPage = "addSide";
 
+var Errormessage = false;
+
+var addID = "";
+var addErrorMessage = false;
+
+
+
 //change side
 function handleAddClick() {
   if (onPage != "addSide") {
@@ -35,6 +42,19 @@ const viewBarElement = document.querySelector(".view-bar");
 addBarElement.addEventListener("click", handleAddClick);
 viewBarElement.addEventListener("click", handleViewClick);
 
+
+//Reset form data 
+function resetDetails(id) {
+  removeRedBorderAndContent("emp_id", "id_error");
+
+  
+  removeRedBorderAndContent(addID, addErrorMessage);
+  var formData = document.getElementById(id);
+  formData.reset();
+}
+
+
+
 //Check form data validation
 function addContentAfterElement(elementId, content, errorMessage) {
   var targetElement = document.getElementById(elementId);
@@ -65,66 +85,6 @@ function isValidUrl(url) {
   return imageExtensionsRegex.test(url);
 }
 
-const inputBox = document.getElementById("emp_id");
-
-function handleKeyup(event) {
-  var valuedata = document.getElementById("emp_id").value;
-
-  // console.log(typeof(parseInt(valuedata)))
-  let isDuplicate = false;
-  if (parseInt(valuedata) < 0) {
-    addContentAfterElement(
-      "emp_id",
-      "The ID value cannot be negative",
-      "id_error"
-    );
-    inputBox.addEventListener("blur", keepFocusOnInput);
-    Errormessage = true;
-    return;
-  }
-
-  if (valuedata == 0) {
-    addContentAfterElement(
-      "emp_id",
-      "The ID value cannot be 0 or left blank.",
-      "id_error"
-    );
-    inputBox.addEventListener("blur", keepFocusOnInput);
-    Errormessage = true;
-  } else {
-    EmployeeData.forEach((obj) => {
-      if (obj.emp_id === parseInt(valuedata)) {
-        addContentAfterElement(
-          "emp_id",
-          "Id already as been taken.",
-          "id_error"
-        );
-        inputBox.addEventListener("blur", keepFocusOnInput);
-        isDuplicate = true;
-        Errormessage = true;
-        return;
-      }
-    });
-
-    if (!isDuplicate) {
-      // alert("reject");
-      removeRedBorderAndContent("emp_id", "id_error");
-      Errormessage = false;
-      inputBox.removeEventListener("blur", keepFocusOnInput);
-    }
-  }
+function preventNumberInputNavigation(event) {
+  event.preventDefault();
 }
-
-function keepFocusOnInput() {
-  inputBox.focus();
-}
-
-function handleKeyDown(event) {
-  if (event.key === "Tab") {
-    event.preventDefault(); // Prevent default tab behavior
-  }
-}
-
-// Attach the event listener
-inputBox.addEventListener("keyup", handleKeyup);
-inputBox.addEventListener("keydown", handleKeyDown);

@@ -14,84 +14,18 @@
 
     <title>Employee_portal</title>
 
-    <style>
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 20px;
-      }
-
-      th,
-      td {
-        text-align: left;
-        padding: 8px;
-      }
-
-      tr:nth-child(odd) {
-        background-color: #f2f2f2;
-      }
-
-      th {
-        background-color: #df7224;
-        color: white;
-      }
-
-      .button-container {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .edit-button {
-        background-color: green;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        cursor: pointer;
-        border-radius: 4px;
-      }
-
-      .delete-button {
-        background-color: red;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        cursor: pointer;
-        border-radius: 4px;
-      }
-
-      .view-button {
-        background-color: rgb(255, 136, 0);
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        cursor: pointer;
-        border-radius: 4px;
-      }
-
-      img {
-        max-width: 200px;
-        max-height: 200px;
-      }
-
-      .details {
-        margin-top: 20px;
-      }
-
-      .title {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-      }
-    </style>
+    <style></style>
   </head>
 
   <body>
     <div class="container">
+      <!-- Nav bar -->
       <div class="nav-bar">
         <div class="add-bar">Add Employee Details</div>
         <div class="view-bar">View Employee Details</div>
       </div>
+
+      <!-- Add New Employee Part -->
       <form
         class="form-data"
         action="javascript:;"
@@ -153,35 +87,39 @@
           placeholder="Enter Employee Gender"
         >
           <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="others">Others</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Others">Others</option>
         </select>
         <span id="gender_error"></span>
 
-        <div style="display: flex; flex-direction: row; gap: 50px">
+        <div class="submit-container">
           <input type="submit" value="Add Employee Details" />
           <input
             style="background-color: rgb(43, 202, 226)"
             type="button"
-            value="View Employee Details"
-            onclick="ViewDetails()"
+            value="Reset Employee Data"
+            onclick="resetDetails('formData')"
           />
         </div>
       </form>
 
+      <!-- View ,Edit, Delete Part -->
+
       <div id="ViewSide" style="display: none">
-        <table id="myTable">
-          <tr>
-            <th>Employee Id</th>
-            <th>Employee Name</th>
-            <th>Employee Age</th>
-            <th>Employee Designation</th>
-            <th>Employee Gender</th>
-            <th>Actions</th>
-          </tr>
-          <tr></tr>
-        </table>
+        <div class="table-container">
+          <table id="myTable">
+            <tr>
+              <th>Employee Id</th>
+              <th>Employee Name</th>
+              <th>Employee Age</th>
+              <th>Employee Designation</th>
+              <th>Employee Gender</th>
+              <th>Actions</th>
+            </tr>
+            <tr></tr>
+          </table>
+        </div>
       </div>
       <!--Delete Modal-->
       <div class="modal" id="deleteModal">
@@ -204,7 +142,8 @@
           <form
             class="form-data"
             action="javascript:;"
-            onsubmit="addEmployess()"
+            onsubmit="Edit_Employee()"
+            id="edit-form-data"
           >
             <h2>Edit Employee Details</h2>
 
@@ -215,6 +154,7 @@
               name="edit_emp_id"
               placeholder="Enter Employee ID"
               onKeyPress="if(this.value.length==6) return false;"
+              onwheel="preventNumberInputNavigation(event)" 
             />
             <span id="edit_id_error"></span>
 
@@ -234,6 +174,7 @@
               name="edit_emp_age"
               placeholder="Enter Employee Age"
               onfocusout="validateAge()"
+              onwheel="preventNumberInputNavigation(event)" 
             />
             <span id="edit_age_error"></span>
 
@@ -267,13 +208,13 @@
               placeholder="Enter Employee Gender"
             >
               <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="others">Others</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
             </select>
             <span id="edit_gender_error"></span>
 
-            <div style="display: flex; flex-direction: row; gap: 50px">
+            <div class="edit-container">
               <input type="submit" value="Update Details" />
               <input
                 style="background-color: rgb(230, 115, 43)"
@@ -285,7 +226,6 @@
           </form>
         </div>
       </div>
-
 
       <!---------------  View Modal    ------------------->
       <div class="modal" id="viewModal">
@@ -330,6 +270,7 @@
     </div>
 
     <script>
+      // Global array of objects
       var EmployeeData = [
         {
           emp_id: 1,
@@ -337,35 +278,17 @@
           emp_age: 30,
           emp_desg: "HR",
           emp_image: "app.jpg",
-          emp_gender: "male",
+          emp_gender: "Male",
           emp_isActive: true,
         },
       ];
     </script>
-    <script type="text/javascript" src="commanFunction.js"></script>
-    <script type="text/javascript" src="AddEmployee.js"></script>
+    <script type="text/javascript" src="./js/commanFunction.js"></script>
+    <script type="text/javascript" src="./js/AddEmployee.js"></script>
     <script type="text/javascript" src="./js/DeleteDetails.js"></script>
     <script type="text/javascript" src="./js/EditDetails.js"></script>
     <script type="text/javascript" src="./js/ViewSingleDetails.js"></script>
     <script type="text/javascript" src="./js/viewEmployeeDetails.js"></script>
-    <script>
-      var Errormessage = false;
-
-      var addID = "";
-      var addErrorMessage = false;
-
-      function submitData(inputData) {
-        EmployeeData.push(inputData);
-
-        console.log(EmployeeData);
-
-        alert("You have successfully created a acccount");
-
-        // location.reload();
-      }
-
-     
-    </script>
- 
+    <script></script>
   </body>
 </html>

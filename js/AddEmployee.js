@@ -1,3 +1,5 @@
+
+
 function addEmployess() {
   var emp_id = document.getElementById("emp_id").value;
   var emp_name = document.getElementById("emp_name").value;
@@ -112,12 +114,74 @@ function addEmployess() {
       emp_gender,
       emp_isActive,
     };
+    EmployeeData.push(inputData);
+    var formData = document.getElementById("formData");
+    formData.reset();
+    alert("You have successfully created a acccount");
+  }
+}
 
-    if (EditAccount > 0) {
-        submitEditedData(inputData);
-    } else {
-        submitData(inputData);
-      
+
+
+const inputBox = document.getElementById("emp_id");
+
+function handleKeyup(event) {
+  var valuedata = document.getElementById("emp_id").value;
+
+  let isDuplicate = false;
+  if (parseInt(valuedata) < 0) {
+    addContentAfterElement(
+      "emp_id",
+      "The ID value cannot be negative",
+      "id_error"
+    );
+    inputBox.addEventListener("blur", keepFocusOnInput);
+    Errormessage = true;
+    return;
+  }
+
+  if (valuedata == 0) {
+    addContentAfterElement(
+      "emp_id",
+      "The ID value cannot be 0 or left blank.",
+      "id_error"
+    );
+    inputBox.addEventListener("blur", keepFocusOnInput);
+    Errormessage = true;
+  } else {
+    EmployeeData.forEach((obj) => {
+      if (obj.emp_id === parseInt(valuedata)) {
+        addContentAfterElement(
+          "emp_id",
+          "Id already as been taken.",
+          "id_error"
+        );
+        inputBox.addEventListener("blur", keepFocusOnInput);
+        isDuplicate = true;
+        Errormessage = true;
+        return;
+      }
+    });
+
+    if (!isDuplicate) {
+      // alert("reject");
+      removeRedBorderAndContent("emp_id", "id_error");
+      Errormessage = false;
+      inputBox.removeEventListener("blur", keepFocusOnInput);
     }
   }
 }
+
+function keepFocusOnInput() {
+  inputBox.focus();
+}
+
+function handleKeyDown(event) {
+  if (event.key === "Tab") {
+    event.preventDefault(); // Prevent default tab behavior
+  }
+}
+
+// Attach the event listener
+inputBox.addEventListener("keyup", handleKeyup);
+inputBox.addEventListener("keydown", handleKeyDown);

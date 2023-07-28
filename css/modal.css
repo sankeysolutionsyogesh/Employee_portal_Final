@@ -119,7 +119,7 @@
     background-color: #0de48aa8;
   }
 
-  @media screen and (max-width: 999px) {
+  @media screen and (max-width: 768px) {
     .view-Details {
         display: flex;
         flex-direction:  column-reverse;
@@ -130,5 +130,8 @@
         border-radius: 10px;
         overflow: hidden;
     }
-    
+    .view-Modal input[type=submit] {
+        width: 73%;
+        
+    }
   }
