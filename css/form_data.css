@@ -1,50 +1,86 @@
-
-label{
-    align-self: flex-start;
+label {
+  align-self: flex-start;
 }
 
-.form-data{
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    padding-left: 200px;
-    padding-right: 200px;
-    justify-content: center;
-    align-items: center;
-    gap: 11px;
+.form-data {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 200px;
+  padding-right: 200px;
+  /* justify-content: center;
+    align-items: center; */
+  gap: 11px;
 
 }
-span {
+
+.form-data span {
   color: red;
+  text-align: center;
 }
-input[type=text]::after {
-    content: " - Remember this";
+
+
+
+input[type=text],
+select,
+input[type=number] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit],
+input[type=button] {
+  width: 100%;
+  background-color: #0de48b;
+  color: rgb(8, 0, 0);
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+input[type=submit]:hover,
+input[type=button] {
+  background-color: #0de48aa8;
+}
+
+
+/* Default styles for the buttons */
+.submit-container {
+  display: flex;
+  flex-direction: row;
+    gap: 50px;
+}
+
+/* Responsive styles for smaller screens */
+@media only screen and (max-width: 768px) {
+  .submit-container {
+    flex-direction: column;
+    gap: 0px;
+    /* flex-wrap: nowrap; */
+
+  }
+
+  .submit-container input[type="submit"],
+  .submit-container input[type="button"] {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .form-data {
+
+    padding-left: 20px;
+    padding-right: 20px;
+
   }
 
 
-input[type=text], select,  input[type=number]{
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  input[type=submit], input[type=button] {
-    width: 100%;
-    background-color: #0de48b;
-    color: rgb(8, 0, 0);
-    padding: 14px 80px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: 700;
-  }
-  
-  input[type=submit]:hover, input[type=button] {
-    background-color: #0de48aa8;
-  }
+}
